@@ -1,7 +1,7 @@
 # c2ouf.com
 - Site e-commerce
 
-# Fronte and
+# Fronte-and
 
 
 
@@ -27,7 +27,7 @@
 
 
 
-# Back and
+# Back-and
 
 
 
