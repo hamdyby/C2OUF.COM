@@ -1,7 +1,7 @@
 # c2ouf.com
 - Site e-commerce
 
-# front office
+# front-office
 
 
 
