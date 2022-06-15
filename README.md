@@ -2,6 +2,7 @@
 - Site e-commerce
 
 # front-office
+Création d'un logo 
 
 
 
