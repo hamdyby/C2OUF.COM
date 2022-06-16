@@ -36,7 +36,7 @@ Création d'un logo
 - installer l'environnement de travail et lancer le premier projet
 
 16/05/2022
--Connecter le projet avec la base de données
+- Connecter le projet avec la base de données
 
 
 
