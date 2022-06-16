@@ -35,6 +35,9 @@ Création d'un logo
 - fixer l'architecture pour la partie backend: architecture MVC 
 - installer l'environnement de travail et lancer le premier projet
 
+16/05/2022
+-Connecter le projet avec la base de données
+
 
 
 
