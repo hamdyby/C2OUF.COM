@@ -38,6 +38,9 @@ Création d'un logo
 16/05/2022
 - Connecter le projet avec la base de données
 
+17/06/2022
+- Creation de nouvelles entités et faire la liaison en les tables 
+
 
 
 
