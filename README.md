@@ -39,7 +39,10 @@ Création d'un logo
 - Connecter le projet avec la base de données
 
 17/06/2022
-- Creation de nouvelles entités et faire la liaison en les tables 
+- Creation de nouvelles entités et faire la liaison entre les tables 
+
+20/06/2022
+- Faire un getRequest sur les promotions qui sont mis manuellement dans la base de données
 
 
 
