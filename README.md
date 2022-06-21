@@ -44,8 +44,9 @@ Création d'un logo
 20/06/2022
 - Faire un getRequest sur les promotions qui sont mis manuellement dans la base de données
 
-
-
+21/06/2022
+-  Arriver à synchroniser le site avec API fournisseur.
+-  Tester quelques requetes utiles.
 
 
 
