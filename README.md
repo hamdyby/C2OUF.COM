@@ -2,7 +2,8 @@
 - Site e-commerce
 
 # front-office
-Création d'un logo 
+Création d'un logo
+modifier les images des produits
 
 
 
