@@ -38,9 +38,9 @@ public class ServerApplication {
             try {
                 List<Produit> produits = mapper.readValue(inputStream,typeReference);
                 produitService.save(produits);
-                System.out.println("Users Saved!");
+                System.out.println("Products Saved!");
             } catch (IOException e){
-                System.out.println("Unable to save users: " + e.getMessage());
+                System.out.println("Unable to save products: " + e.getMessage());
             }
         };
     }
