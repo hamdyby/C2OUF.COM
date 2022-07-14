@@ -1,8 +1,13 @@
 package com.microservice.api.Controller;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import com.google.gson.Gson;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -42,10 +47,17 @@ public class ProductController {
   }
 
   //get all products (specify page size and page)
+  // **** fields name and description
   @GetMapping("/produits")
-  public List<Object> getProducts(@RequestParam("isoCode") String isoCode, @RequestParam("pageSize") long pageSize, @RequestParam("page") long page) {
+  public List<Object> getProducts(@RequestParam("isoCode") String isoCode, @RequestParam("pageSize") long pageSize, @RequestParam("page") long page) throws IOException, JSONException {
     String url ="https://api.bigbuy.eu/rest/catalog/productsinformation.json?isoCode="+isoCode+"&pageSize="+pageSize+"&page="+page;
     Object[] produits = restTemplate.exchange(url, HttpMethod.GET,new HttpEntity<String>(createHeaders()), Object[].class).getBody();
+    Gson gson = new Gson();
+    //JSONObject myObject = new JSONObject(Arrays.toString(produits));
+
+    gson.toJson( produits, new FileWriter("test.json")); // store result in json
+
+System.out.println("hello");
     return  Arrays.asList(produits);
 
   }
