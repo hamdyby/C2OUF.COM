@@ -39,6 +39,10 @@ public class ProductController {
     return restTemplate.exchange("https://api.bigbuy.eu/rest/catalog/product/"+id +".json", HttpMethod.GET,new HttpEntity<String>(createHeaders()), String.class).getBody();
   }*/
 
+
+
+
+
     //get product by id
     @RequestMapping(value = "/produit/{id}")
     public Object getProductById(@PathVariable("id") long id) {
