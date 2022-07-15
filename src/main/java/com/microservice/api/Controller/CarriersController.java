@@ -48,10 +48,10 @@ public class CarriersController {
 
     //*****for fields ..... insert them into collection
     String url = "https://api.bigbuy.eu/rest/shipping/carriers.json" ;
-    Object[] carriers = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object[].class).getBody();
+    Object[] carriers1 = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object[].class).getBody();
 
 
-    //*****for fields ..... insert them into collection
+    // *****for fields ..... insert them into collection
 
 
 
