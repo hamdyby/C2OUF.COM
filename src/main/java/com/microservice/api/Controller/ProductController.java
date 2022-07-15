@@ -57,7 +57,7 @@ public class ProductController {
         try {
 
             // Writing to a file
-            mapper.writeValue(new File("test.json"), produits);
+            mapper.writeValue(new File("product.json"), produits);
 
            } catch (IOException e) {
             e.printStackTrace();
