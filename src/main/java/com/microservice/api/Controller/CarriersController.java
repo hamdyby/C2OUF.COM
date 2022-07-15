@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.json.JSONException;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.microservice.api.Service.CarriersService;
 
 @RestController
 public class CarriersController {
