@@ -1,26 +1,17 @@
 package com.microservice.api.Controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Iterator;
+import java.util.HashMap; // import the HashMap class
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import org.json.JSONException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microservice.api.Service.CarriersService;
 
 @RestController
@@ -42,20 +33,29 @@ public class CarriersController {
   }
 // field table Carriers
   @GetMapping("/insertcarriers")
-  public File insertcarriers(){
-    //***** declare the collection
+  public void insertcarriers(){
+    // ******  Create a HashMap object called capitalCities
+    HashMap<String, Object> carriers1map = new HashMap<>();
 
 
     //*****for fields ..... insert them into collection
     String url = "https://api.bigbuy.eu/rest/shipping/carriers.json" ;
-    Object[] carriers1 = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object[].class).getBody();
+     Object carriers1 = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<String>(createHeaders()),Object.class).getBody();
+
+    carriers1map.put("test", carriers1);
+
+    //********** display the hashmap
+    for(Iterator i = carriers1map.keySet().iterator(); i.hasNext();){
+      Object key=i.next();
+      System.out.println(key + "=" + carriers1map.get(key));
+    }
+    // *****for fields ..... insert them into hashmap
 
 
-    // *****for fields ..... insert them into collection
 
+   /*
+    //***** generate json file from the hashmap
 
-
-    //***** generate json file from the collection
     ObjectMapper mapper = new ObjectMapper();
     try {
 
@@ -85,8 +85,8 @@ public class CarriersController {
           System.out.println("Carriers Saved!");
         } catch (IOException e){
           System.out.println("Unable to save carriers: " + e.getMessage());
-        }
-      };
+        }*/
+      }
 
 
 
