@@ -1,8 +1,11 @@
 package com.microservice.api.Controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.HashMap; // import the HashMap class
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -33,16 +36,39 @@ public class CarriersController {
   }
 // field table Carriers
   @GetMapping("/insertcarriers")
-  public void insertcarriers(){
+  public void insertcarriers() throws IOException {
     // ******  Create a HashMap object called capitalCities
     HashMap<String, Object> carriers1map = new HashMap<>();
+    HashMap<String, Object> test = new HashMap<>();
 
 
-    //*****for fields ..... insert them into collection
+
+    //*****for fields ..... insert them into dashmap
     String url = "https://api.bigbuy.eu/rest/shipping/carriers.json" ;
-     Object carriers1 = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<String>(createHeaders()),Object.class).getBody();
+     Object[] carriers1 = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<String>(createHeaders()),Object[].class).getBody();
 
-    carriers1map.put("test", carriers1);
+
+    int j=0;
+    for (Object object : carriers1)
+    {
+      //System.out.println(carriers1[j]);
+
+      carriers1map.put("case"+j, carriers1[j]);
+     // System.out.println("++++++++++++++++++++++++++++++");
+      test= (HashMap<String, Object>) carriers1map.get("case"+j); // get value by key
+      String key = (String) test.get("id");;
+      carriers1map.put(key, carriers1[j]);
+      j++;
+
+  }
+    //System.out.println("The Value is: " + carriers1map.get("5")); // get value by key
+
+   // mapper.writeValue(new File("/json/insertCarriers.json"), String.valueOf(carriers1map));
+    /*
+    System.out.println(carriers1[1]);
+System.out.println("***************************");
+System.out.println(carriers1[2]);
+    carriers1map.put("test", carriers1);*/
 
     //********** display the hashmap
     for(Iterator i = carriers1map.keySet().iterator(); i.hasNext();){
@@ -50,6 +76,9 @@ public class CarriersController {
       System.out.println(key + "=" + carriers1map.get(key));
     }
     // *****for fields ..... insert them into hashmap
+
+
+
 
 
 
