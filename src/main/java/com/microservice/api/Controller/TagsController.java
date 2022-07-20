@@ -4,15 +4,18 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
@@ -30,9 +33,9 @@ public class TagsController {
   }
 
   @GetMapping("/tags")
-  public List<Object> getCarriers(){
+  public void getCarriers(){
     String url = "https://api.bigbuy.eu/rest/catalog/tags.json?isoCode=fr" ;
-    Object[] tags = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object[].class).getBody();
+    /*Object[] tags = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object[].class).getBody();
 
     ObjectMapper mapper = new ObjectMapper();
     try {
@@ -43,8 +46,13 @@ public class TagsController {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    return  Arrays.asList(tags);
+    return  Arrays.asList(tags);*/
 
+    ResponseEntity<JsonNode> e = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<String>(createHeaders()),JsonNode.class);
+
+
+    System.out.println(e.getBody());
 
   }
+
 }
