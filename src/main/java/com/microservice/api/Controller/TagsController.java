@@ -2,6 +2,8 @@ package com.microservice.api.Controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +19,9 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.stream.JsonReader;
 
 @RestController
 public class TagsController {
@@ -33,7 +38,7 @@ public class TagsController {
   }
 
   @GetMapping("/tags")
-  public void getCarriers(){
+  public void getCarriers() throws IOException {
     String url = "https://api.bigbuy.eu/rest/catalog/tags.json?isoCode=fr" ;
     /*Object[] tags = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object[].class).getBody();
 
