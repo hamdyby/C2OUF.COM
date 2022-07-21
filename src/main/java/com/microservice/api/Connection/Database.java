@@ -7,7 +7,7 @@ import java.sql.*;
 public class Database {
 
 
-    private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    private static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String URL = "jdbc:mysql://localhost:3306/c2ouf?useSSL=false";
     private static final String USERNAME = "root";
     private static final String PASSWORD = "";
@@ -16,8 +16,12 @@ public class Database {
 
     public Database() {
         try {
+
             Class.forName(JDBC_DRIVER);
             conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            System.out.println("**********************");
+
+            System.out.println("**********************"+conn);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

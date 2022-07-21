@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microservice.api.Connection.Database;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -31,6 +32,7 @@ public class CarriersController {
   CarriersService carriersService;
   @Autowired
   private ModelMapper modelMapper;
+
 
   HttpHeaders createHeaders() {
     return new HttpHeaders() {
@@ -97,10 +99,11 @@ System.out.println(carriers1[2]);
 
 
     Database db = new Database();
-    for (Entry<String,Object> next : carriers1map) {
-      db.executeUpdate("INSERT INTO table (Key, Value) VALUES("+next.getKey()+",'"+next.getValue()+"');";
-    }
-    db.closeConnection();
+
+      db.executeUpdate("INSERT INTO carriers VALUES (2, 'Chrono',1)");
+
+  }
+   // db.closeConnection();
   }
 
   //***** insert the json into database
@@ -125,4 +128,3 @@ System.out.println(carriers1[2]);
   // ***** insert hashmp in table
 
 
-}
