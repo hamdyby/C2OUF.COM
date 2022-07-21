@@ -100,7 +100,7 @@ System.out.println(carriers1[2]);
 
     Database db = new Database();
 
-      db.executeUpdate("INSERT INTO table carriers VALUES ('11', 'valour','5')");
+      db.executeUpdate("INSERT INTO carriers VALUES (2, 'Chrono',1)");
 
   }
    // db.closeConnection();
