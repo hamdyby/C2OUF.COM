@@ -100,7 +100,10 @@ System.out.println(carriers1[2]);
 
     Database db = new Database();
 
-      db.executeUpdate("INSERT INTO carriers VALUES (2, 'Chrono',1)");
+    for (Map.Entry< String,Object> next : carriers1map.entrySet()) {
+      db.executeUpdate("INSERT INTO table (Key, Value) VALUES("+next.getKey()+",'"+next.getValue()+"');");
+    }
+    db.closeConnection();
 
   }
    // db.closeConnection();
