@@ -97,10 +97,11 @@ System.out.println(carriers1[2]);
 
 
     Database db = new Database();
-    for (Entry<String,Object> next : carriers1map) {
-      db.executeUpdate("INSERT INTO table (Key, Value) VALUES("+next.getKey()+",'"+next.getValue()+"');";
-    }
-    db.closeConnection();
+
+      db.executeUpdate("INSERT INTO table carriers VALUES ('11', 'valour','5')");
+
+  }
+   // db.closeConnection();
   }
 
   //***** insert the json into database
@@ -125,4 +126,3 @@ System.out.println(carriers1[2]);
   // ***** insert hashmp in table
 
 
-}
