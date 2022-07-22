@@ -43,88 +43,43 @@ public class CarriersController {
     };
   }
 
+  // Connect to data base
+  Database db = new Database();
+
   // field table Carriers
   @GetMapping("/insertcarriers")
   public void insertcarriers() throws IOException, SQLException {
-    // ******  Create a HashMap object called capitalCities
-    HashMap<String, Object> carriers1map = new HashMap<>();
+    // ******  Create a HashMap object
+    HashMap<String, Object> carriersmap = new HashMap<>();
     HashMap<String, Object> test = new HashMap<>();
 
     //*****for fields ..... insert them into dashmap
     String url = "https://api.bigbuy.eu/rest/shipping/carriers.json";
-    Object[] carriers1 = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object[].class).getBody();
+    Object[] carriers = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object[].class).getBody();
 
 
     int j = 0;
-    for (Object object : carriers1) {
-      //System.out.println(carriers1[j]);
-
-      carriers1map.put("case" + j, carriers1[j]);
-      // System.out.println("++++++++++++++++++++++++++++++");
-      test = (HashMap<String, Object>) carriers1map.get("case" + j); // get value by key
+    for (Object object : carriers) {
+      carriersmap.put("case" + j, carriers[j]);
+      test = (HashMap<String, Object>) carriersmap.get("case" + j); // get value by key
       String key = (String) test.get("id");
-      carriers1map.remove("case" + j);
+      carriersmap.remove("case" + j);
+      carriersmap.put(key, carriers[j]);
+      db.executeUpdate("INSERT INTO carriers(id,name) VALUES  ('" + test.get("id") + "','" + test.get("name") + "')");
 
-      carriers1map.put(key, carriers1[j]);
       j++;
 
     }
-    //System.out.println("The Value is: " + carriers1map.get("5")); // get value by key
-
-    // mapper.writeValue(new File("/json/insertCarriers.json"), String.valueOf(carriers1map));
-    /*
-    System.out.println(carriers1[1]);
-System.out.println("***************************");
-System.out.println(carriers1[2]);
-    carriers1map.put("test", carriers1);*/
 
     //********** display the hashmap
-    for (Iterator i = carriers1map.keySet().iterator(); i.hasNext(); ) {
+    for (Iterator i = carriersmap.keySet().iterator(); i.hasNext(); ) {
       Object key = i.next();
-      System.out.println(key + "=" + carriers1map.get(key));
+      System.out.println(key + "=" + carriersmap.get(key));
     }
-    // *****for fields ..... insert them into hashmap
+    // *****for fields ..... insert them into hashmap..........
 
 
-    //***** generate json file from the hashmap
-
-    ObjectMapper mapper = new ObjectMapper();
-    try {
-
-      mapper.writeValue(new File("carriers.json"), carriers1map);
-
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-
-
-    Database db = new Database();
-
-      db.executeUpdate("INSERT INTO carriers VALUES (2, 'Chrono',1)");
+    //***** insert in DB with requetes
 
   }
-   // db.closeConnection();
-  }
-
-  //***** insert the json into database
-  /*  @Bean
-    CommandLineRunner runner(CarriersService carriersService) {
-      return args -> {
-        // read json and write to db
-        ObjectMapper mapper = new ObjectMapper();
-        //String path = getCarriers();
-        //  System.out.println("ooooooooooooooooo"+path);
-        TypeReference<List<Carriers>> typeReference = new TypeReference<List<Carriers>>(){};
-        InputStream inputStream = TypeReference.class.getResourceAsStream("/json/insertCarriers.json");
-        try {
-          List<Carriers> carriers = mapper.readValue(inputStream,typeReference);
-          carriersService.save(carriers);
-          System.out.println("Carriers Saved!");
-        } catch (IOException e){
-          System.out.println("Unable to save carriers: " + e.getMessage());
-        }
-
-*/
-  // ***** insert hashmp in table
-
-
+}
