@@ -4,9 +4,11 @@ package com.microservice.api.Controller;
     import java.io.IOException;
     import java.security.KeyStore;
     import java.sql.SQLException;
+    import java.util.Collection;
     import java.util.Iterator;
     import java.util.HashMap; // import the HashMap class
     import java.util.Map;
+    import java.util.ArrayList;
 
     import com.fasterxml.jackson.databind.ObjectMapper;
     import com.microservice.api.Connection.Database;
@@ -60,19 +62,20 @@ public class shippingServices {
 
 
     int j = 0;
-    for (Object object : shippings) {
-      shippingsmap.put("case" + j, shippings[j]);
-      test = (HashMap<String, Object>) shippingsmap.get("case" + j); // get value by key
-      System.out.println("obj"+object);
-      String key = (String) test.get("id");
-      System.out.println(test.get("shippingServices"));
+      for (Object object : shippings) {
+          shippingsmap.put("case" + j, shippings[j]);
+          test = (HashMap<String, Object>) shippingsmap.get("case" + j); // get value by key
+          String key = (String) test.get("id");
+          /*Object sh = test.get("shippingServices");*/
+          Collection<Object> sh = (Collection<Object>) test.get("shippingServices");
+          for (Object name : sh) {
+              System.out.println(sh);
+              shippingsmap.remove("case" + j);
+              shippingsmap.put(key, shippings[j]);
+              db.executeUpdate("INSERT INTO shipping_services(id,delay,name,carriers_id) VALUES  ('" + test.get("shippingServices") + "','" + test.get("delay") + "','"
+                      + test.get("name") + "','" + key + "')");}
 
-      shippingsmap.remove("case" + j);
-      shippingsmap.put(key, shippings[j]);
-      db.executeUpdate("INSERT INTO shipping_services(id,delay,name,carriers_id) VALUES  ('" + test.get("shippingServices") + "','" + test.get("delay") + "','"
-                        + test.get("name") + "','" + key+"')");
-
-      j++;
+              j++;
 
     }
 
