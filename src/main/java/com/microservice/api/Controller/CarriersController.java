@@ -49,7 +49,7 @@ public class CarriersController {
         // ******  Create a HashMap object called capitalCities
         HashMap<String, Object> carriers1map = new HashMap<>();
         HashMap<String, Object> test = new HashMap<>();
-
+        /*HashMap<String, Object> test2 = new HashMap<>();*/
         //*****for fields ..... insert them into dashmap
         String url = "https://api.bigbuy.eu/rest/shipping/carriers.json";
         Object[] carriers1 = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object[].class).getBody();
@@ -69,6 +69,9 @@ public class CarriersController {
             j++;
 
         }
+
+
+
         //System.out.println("The Value is: " + carriers1map.get("5")); // get value by key
 
         // mapper.writeValue(new File("/json/insertCarriers.json"), String.valueOf(carriers1map));
@@ -101,7 +104,7 @@ System.out.println(carriers1[2]);
         Database db = new Database();
 
         for (Map.Entry<String, Object> next : carriers1map.entrySet()) {
-            db.execute("INSERT INTO carriers (Key, Value) VALUES(" + carriers1map.get("Key") + ", " + carriers1map.get("value") + ");");
+            /*db.execute("INSERT INTO carriers (Key, Value) VALUES(" + carriers1map.get("Key") + ", " + carriers1map.get("value") + ");");*/
         }
         db.closeConnection();
 
