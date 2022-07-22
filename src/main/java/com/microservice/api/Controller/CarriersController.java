@@ -53,7 +53,7 @@ public class CarriersController {
     HashMap<String, Object> carriersmap = new HashMap<>();
     HashMap<String, Object> test = new HashMap<>();
 
-    //*****for fields ..... insert them into dashmap
+    //*****for fields ..... insert them into hashmap
     String url = "https://api.bigbuy.eu/rest/shipping/carriers.json";
     Object[] carriers = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object[].class).getBody();
 
