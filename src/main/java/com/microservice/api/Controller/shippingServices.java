@@ -54,8 +54,8 @@ public class shippingServices {
     // ******  Create a HashMap object
     HashMap<String, Object> shippingsmap = new HashMap<>();
     HashMap<String, Object> test = new HashMap<>();
-      HashMap<String, ArrayList<Object>> shippingsmaptest = new HashMap<>();
-
+    HashMap<String, ArrayList<Object>> shippingsmaptest = new HashMap<>();
+    HashMap<String, Object> test5 = new HashMap<>();
 
       //*****for fields ..... insert them into hashmap
     String url = "https://api.bigbuy.eu/rest/shipping/carriers.json";
@@ -70,11 +70,16 @@ public class shippingServices {
       String key = (String) test.get("id");
 
         shippingsmaptest.put("case" + j, (ArrayList<Object>) test.get("shippingServices"));
-        for(int k = 0; k < ((ArrayList<?>) test.get("shippingServices")).size(); k++) {
-            System.out.println("hhhhhhhhhhhhhhhhhhhhhhhhh" + ((ArrayList<Object>) test.get("shippingServices")).get(k));
+        int k=0;
+        int n=0;
+        while (k < ((ArrayList<Object>) test.get("shippingServices")).size()) {
+            //System.out.println("hhhhhhhhhhhhhhhhhhhhhhhhh" + ((ArrayList<Object>) test.get("shippingServices")).get(k));
+            test5.put("key"+k,((ArrayList<Object>) test.get("shippingServices")).get(k));
 
+            k=k+j;
 
         }
+
        // System.out.println(test.get("shippingServices"));
       shippingsmap.remove("case" + j);
       shippingsmap.put(key, shippings[j]);
@@ -87,10 +92,10 @@ public class shippingServices {
     }
 
     //********** display the hashmap
-    for (Iterator i = shippingsmaptest.keySet().iterator(); i.hasNext(); ) {
-      Object key = i.next();
-      System.out.println(key + "=" + shippingsmaptest.get(key));
-    }
+      for (Iterator<String> i = test5.keySet().iterator(); i.hasNext(); ) {
+          Object key = i.next();
+          System.out.println(key + "=" + test5.get(key));
+      }
     // *****for fields ..... insert them into hashmap..........
 
 
