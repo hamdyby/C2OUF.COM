@@ -1,14 +1,20 @@
 package com.microservice.api.Controller;
 
+    import java.io.File;
     import java.io.IOException;
+    import java.security.KeyStore;
     import java.sql.SQLException;
     import java.util.ArrayList;
+    import java.util.Arrays;
     import java.util.Iterator;
     import java.util.HashMap; // import the HashMap class
+    import java.util.Map;
 
+    import com.fasterxml.jackson.databind.ObjectMapper;
     import com.microservice.api.Connection.Database;
     import org.modelmapper.ModelMapper;
     import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration;
     import org.springframework.http.HttpEntity;
     import org.springframework.http.HttpHeaders;
     import org.springframework.http.HttpMethod;
@@ -49,10 +55,8 @@ public class shippingServices {
     // ******  Create a HashMap object
     HashMap<String, Object> shippingsmap = new HashMap<>();
     HashMap<String, Object> test = new HashMap<>();
+    HashMap<String, Object> test2 = new HashMap<>();
       HashMap<String, ArrayList<Object>> shippingsmaptest = new HashMap<>();
-
-       HashMap<String, Object> test5 = new HashMap<>();
-
 
 
       //*****for fields ..... insert them into hashmap
@@ -64,42 +68,26 @@ public class shippingServices {
     for (Object object : shippings) {
       shippingsmap.put("case" + j, shippings[j]);
       test = (HashMap<String, Object>) shippingsmap.get("case" + j); // get value by key
-      //System.out.println("obj"+object);
       String key = (String) test.get("id");
 
         shippingsmaptest.put("case" + j, (ArrayList<Object>) test.get("shippingServices"));
+        for(int k = 0; k < ((ArrayList<?>) test.get("shippingServices")).size(); k++) {
 
-       // System.out.println(test.get("shippingServices"));
+          test2 = (HashMap<String, Object>) ((ArrayList<Object>) test.get("shippingServices")).get(k);
+          db.executeUpdate("INSERT INTO shipping_services(id,delay,name,carriers_id) VALUES  ('" + test2.get("id") + "','" + test2.get("delay") + "','"
+              + test2.get("name") + "','" + key+"')");
+        }
       shippingsmap.remove("case" + j);
       shippingsmap.put(key, shippings[j]);
 
-      //db.executeUpdate("INSERT INTO shipping_services(id,delay,name,carriers_id) VALUES  ('" + test.get("shippingServices") + "','" + test.get("delay") + "','"
-                      //  + test.get("name") + "','" + key+"')");
-
-
-
-
-        for(int k = 0; k < ((ArrayList<Object>) test.get("shippingServices")).size(); k++) {
-System.out.println("  chouuuuuuuuf" +k);
-            System.out.println("hhhhhhhhhhhhhhhhhhhhhhhhh" + ((ArrayList<Object>) test.get("shippingServices")).get(k));
-
-            //System.out.println("melooowelllllll");
-            test5.put("test"+j,((ArrayList<Object>) test.get("shippingServices")).get(k));
-
-
-        }
       j++;
-
     }
+
     //********** display the hashmap
-    for (Iterator<String> i = test5.keySet().iterator(); i.hasNext(); ) {
+    for (Iterator i = shippingsmaptest.keySet().iterator(); i.hasNext(); ) {
       Object key = i.next();
-      System.out.println(key + "=" + test5.get(key));
+      System.out.println(key + "=" + shippingsmaptest.get(key));
     }
-    // *****for fields ..... insert them into hashmap..........
-
-
-    //***** insert in DB with requetes
 
   }
 }
