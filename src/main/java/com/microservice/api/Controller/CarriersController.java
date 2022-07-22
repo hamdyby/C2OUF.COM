@@ -1,18 +1,12 @@
 package com.microservice.api.Controller;
 
-import java.io.File;
 import java.io.IOException;
-import java.security.KeyStore;
 import java.sql.SQLException;
-import java.util.Iterator;
 import java.util.HashMap; // import the HashMap class
-import java.util.Map;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microservice.api.Connection.Database;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -53,6 +47,10 @@ public class CarriersController {
     HashMap<String, Object> carriersmap = new HashMap<>();
     HashMap<String, Object> test = new HashMap<>();
 
+    HashMap<String, HashMap<String, Object>> testtt = new HashMap<>();
+    HashMap<String, Object> test4 = new HashMap<>();
+
+
     //*****for fields ..... insert them into dashmap
     String url = "https://api.bigbuy.eu/rest/shipping/carriers.json";
     Object[] carriers = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object[].class).getBody();
@@ -65,21 +63,42 @@ public class CarriersController {
       String key = (String) test.get("id");
       carriersmap.remove("case" + j);
       carriersmap.put(key, carriers[j]);
-      db.executeUpdate("INSERT INTO carriers(id,name) VALUES  ('" + test.get("id") + "','" + test.get("name") + "')");
+
+      test4.put("test", test.get("shippingServices"));
+
+
+
+     // String key = (String) test.get("id");
+      //carriersmap.remove("case" + j);
+      //carriersmap.put(key, carriers[j]);
+
+
+// Displaying the new map
+      System.out.println("New map is: " + test4);
+
+
+      // db.executeUpdate("INSERT INTO carriers(id,name) VALUES  ('" + test.get("id") + "','" + test.get("name") + "')");
 
       j++;
 
     }
 
     //********** display the hashmap
-    for (Iterator i = carriersmap.keySet().iterator(); i.hasNext(); ) {
+    /*for (Iterator i = carriersmap.keySet().iterator(); i.hasNext(); ) {
       Object key = i.next();
       System.out.println(key + "=" + carriersmap.get(key));
-    }
+    }*/
     // *****for fields ..... insert them into hashmap..........
 
 
-    //***** insert in DB with requetes
+
+
+/*
+    for (Iterator<String> i = testtt.keySet().iterator(); i.hasNext(); ) {
+      Object key = i.next();
+      System.out.println(key + "=" + carriersmap.get(key));
+    }
+    //***** insert in DB with requetes   */
 
   }
 }
