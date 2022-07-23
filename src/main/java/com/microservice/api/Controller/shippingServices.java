@@ -56,7 +56,7 @@ public class shippingServices {
     HashMap<String, Object> shippingsmap = new HashMap<>();
     HashMap<String, Object> test = new HashMap<>();
     HashMap<String, Object> test2 = new HashMap<>();
-      HashMap<String, ArrayList<Object>> shippingsmaptest = new HashMap<>();
+    HashMap<String, ArrayList<Object>> shippingsmaptest = new HashMap<>();
 
 
       //*****for fields ..... insert them into hashmap
