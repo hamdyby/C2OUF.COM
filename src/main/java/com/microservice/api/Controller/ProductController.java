@@ -45,7 +45,9 @@ public class ProductController {
             productsMap .put("case" + j, products[j]);
             test = (HashMap<String, Object>) productsMap.get("case" + j); // get value by key
             System.out.println("********************"+test.get("id"));
+            Long id_param= (Long) test.get("id");
             String key = String.valueOf(test.get("id"));
+            System.out.println(id_param);
             productsMap.remove("case" + j);
             productsMap.put(key, products[j]);
             db.executeUpdate("INSERT INTO product(id,sku,weight,depth,date_upd,date_upd_description,date_upd_images,wholesale_price,retail_price,in_shops_price,height,width,date_upd_stock) VALUES  ('" + test.get("id") + "','" + test.get("sku") +  "','" + test.get("weight")+ "','" + test.get("depth")+  "','" + test.get("dateUpd") +  "','" +  test.get("dateUpdDescription")+  "','" + test.get("dateUpdImages")+  "','" + test.get("wholesalePrice")+"','" + test.get("retailPrice")+  "','" + test.get("inShopsPrice")+  "','" +test.get("height") +  "','" + test.get("width") +  "','" + test.get("dateUpdStock") + "')");
