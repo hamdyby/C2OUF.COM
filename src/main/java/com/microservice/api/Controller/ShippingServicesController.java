@@ -27,7 +27,7 @@ package com.microservice.api.Controller;
 
 
 @RestController
-public class shippingServices {
+public class ShippingServicesController {
   @Autowired
   private RestTemplate restTemplate;
   @Autowired
@@ -49,14 +49,14 @@ public class shippingServices {
   Database db = new Database();
 
   // field table Carriers
-  @GetMapping("/insertshipping")
-  public void insertshipping() throws IOException, SQLException {
+  @GetMapping("/insertShippingServices")
+  public void insertShippingServices() throws IOException, SQLException {
 
     // ******  Create a HashMap object
-    HashMap<String, Object> shippingsmap = new HashMap<>();
+    HashMap<String, Object> shippingsServicesMap = new HashMap<>();
     HashMap<String, Object> test = new HashMap<>();
     HashMap<String, Object> test2 = new HashMap<>();
-    HashMap<String, ArrayList<Object>> shippingsmaptest = new HashMap<>();
+      HashMap<String, ArrayList<Object>> shippingMapTest = new HashMap<>();
 
 
       //*****for fields ..... insert them into hashmap
@@ -66,28 +66,27 @@ public class shippingServices {
 
     int j = 0;
     for (Object object : shippings) {
-      shippingsmap.put("case" + j, shippings[j]);
-      test = (HashMap<String, Object>) shippingsmap.get("case" + j); // get value by key
+      shippingsServicesMap.put("case" + j, shippings[j]);
+      test = (HashMap<String, Object>) shippingsServicesMap.get("case" + j); // get value by key
       String key = (String) test.get("id");
 
-        shippingsmaptest.put("case" + j, (ArrayList<Object>) test.get("shippingServices"));
+      shippingMapTest.put("case" + j, (ArrayList<Object>) test.get("shippingServices"));
         for(int k = 0; k < ((ArrayList<?>) test.get("shippingServices")).size(); k++) {
 
           test2 = (HashMap<String, Object>) ((ArrayList<Object>) test.get("shippingServices")).get(k);
           db.executeUpdate("INSERT INTO shipping_services(id,delay,name,carriers_id) VALUES  ('" + test2.get("id") + "','" + test2.get("delay") + "','"
               + test2.get("name") + "','" + key+"')");
         }
-      shippingsmap.remove("case" + j);
-      shippingsmap.put(key, shippings[j]);
+      shippingsServicesMap.remove("case" + j);
+      shippingsServicesMap.put(key, shippings[j]);
 
       j++;
     }
 
     //********** display the hashmap
-    for (Iterator i = shippingsmaptest.keySet().iterator(); i.hasNext(); ) {
+    for (Iterator i = shippingMapTest.keySet().iterator(); i.hasNext(); ) {
       Object key = i.next();
-      System.out.println(key + "=" + shippingsmaptest.get(key));
+      System.out.println(key + "=" + shippingMapTest.get(key));
     }
-
   }
 }

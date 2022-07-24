@@ -1,18 +1,12 @@
 package com.microservice.api.Controller;
 
-import java.io.File;
 import java.io.IOException;
-import java.security.KeyStore;
 import java.sql.SQLException;
 import java.util.Iterator;
-import java.util.HashMap; // import the HashMap class
-import java.util.Map;
+import java.util.HashMap;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microservice.api.Connection.Database;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -30,9 +24,6 @@ public class CarriersController {
   private RestTemplate restTemplate;
   @Autowired
   CarriersService carriersService;
-  @Autowired
-  private ModelMapper modelMapper;
-
 
   HttpHeaders createHeaders() {
     return new HttpHeaders() {
@@ -47,10 +38,10 @@ public class CarriersController {
   Database db = new Database();
 
   // field table Carriers
-  @GetMapping("/insertcarriers")
-  public void insertcarriers() throws IOException, SQLException {
+  @GetMapping("/insertCarriers")
+  public void insertCarriers() throws IOException, SQLException {
     // ******  Create a HashMap object
-    HashMap<String, Object> carriersmap = new HashMap<>();
+    HashMap<String, Object> carriersMap = new HashMap<>();
     HashMap<String, Object> test = new HashMap<>();
 
     //*****for fields ..... insert them into hashmap
@@ -60,11 +51,11 @@ public class CarriersController {
 
     int j = 0;
     for (Object object : carriers) {
-      carriersmap.put("case" + j, carriers[j]);
-      test = (HashMap<String, Object>) carriersmap.get("case" + j); // get value by key
+      carriersMap.put("case" + j, carriers[j]);
+      test = (HashMap<String, Object>) carriersMap.get("case" + j); // get value by key
       String key = (String) test.get("id");
-      carriersmap.remove("case" + j);
-      carriersmap.put(key, carriers[j]);
+      carriersMap.remove("case" + j);
+      carriersMap.put(key, carriers[j]);
       db.executeUpdate("INSERT INTO carriers(id,name) VALUES  ('" + test.get("id") + "','" + test.get("name") + "')");
 
       j++;
@@ -72,14 +63,9 @@ public class CarriersController {
     }
 
     //********** display the hashmap
-    for (Iterator i = carriersmap.keySet().iterator(); i.hasNext(); ) {
+    for (Iterator i = carriersMap.keySet().iterator(); i.hasNext(); ) {
       Object key = i.next();
-      System.out.println(key + "=" + carriersmap.get(key));
+      System.out.println(key + "=" + carriersMap.get(key));
     }
-    // *****for fields ..... insert them into hashmap..........
-
-
-    //***** insert in DB with requetes
-
   }
 }
