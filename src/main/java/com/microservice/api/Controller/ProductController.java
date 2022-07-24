@@ -48,7 +48,7 @@ public class ProductController {
         HashMap<String, Object> test = new HashMap<>();
 
         //*****for fields  l barcha  insert them into hashmap
-        String url = "https://api.bigbuy.eu/rest/catalog/products.json?page=1&pageSize=2";
+        String url = "https://api.bigbuy.eu/rest/catalog/products.json?page=1&pageSize=100";
         Object[] products = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object[].class).getBody();
 
         System.out.println(products[0]);
@@ -60,7 +60,7 @@ public class ProductController {
             String key = String.valueOf(test.get("id"));
             productsMap.remove("case" + j);
             productsMap.put(key, products[j]);
-            //db.executeUpdate("INSERT INTO product(id,width) VALUES  ('" + test.get("id") + "','" + test.get("width") + "')");
+            db.executeUpdate("INSERT INTO product(id,sku,weight,depth,dateUpd,dateUpdDescription,dateUpdImages,wholesalePrice,retailPrice,inShopsPrice,width,dateUpdStock) VALUES  ('" + test.get("id") + "','" + test.get("sku") +  "','" + test.get("weight")+ "','" + test.get("depth")+  "','" + test.get("dateUpd") +  "','" +  test.get("dateUpdDescription")+  "','" + test.get("dateUpdImages")+  "','" + test.get("wholesalePrice")+"','" + test.get("retailPrice")+  "','" + test.get("inShopsPrice")+  "','" + test.get("width") +  "','" + test.get("dateUpdStock") + "')");
 
             j++;
 
