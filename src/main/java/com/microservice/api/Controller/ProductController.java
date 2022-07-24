@@ -2,24 +2,14 @@ package com.microservice.api.Controller;
 
 import java.io.*;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 import com.microservice.api.Connection.Database;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -36,8 +26,6 @@ public class ProductController {
             }
         };
     }
-
-
 
     Database db = new Database();
     // field table product
@@ -60,7 +48,7 @@ public class ProductController {
             String key = String.valueOf(test.get("id"));
             productsMap.remove("case" + j);
             productsMap.put(key, products[j]);
-            db.executeUpdate("INSERT INTO product(id,sku,weight,depth,dateUpd,dateUpdDescription,dateUpdImages,wholesalePrice,retailPrice,inShopsPrice,width,dateUpdStock) VALUES  ('" + test.get("id") + "','" + test.get("sku") +  "','" + test.get("weight")+ "','" + test.get("depth")+  "','" + test.get("dateUpd") +  "','" +  test.get("dateUpdDescription")+  "','" + test.get("dateUpdImages")+  "','" + test.get("wholesalePrice")+"','" + test.get("retailPrice")+  "','" + test.get("inShopsPrice")+  "','" + test.get("width") +  "','" + test.get("dateUpdStock") + "')");
+            db.executeUpdate("INSERT INTO product(id,sku,weight,depth,date_upd,date_upd_description,date_upd_images,wholesale_price,retail_price,in_shops_price,height,width,date_upd_stock) VALUES  ('" + test.get("id") + "','" + test.get("sku") +  "','" + test.get("weight")+ "','" + test.get("depth")+  "','" + test.get("dateUpd") +  "','" +  test.get("dateUpdDescription")+  "','" + test.get("dateUpdImages")+  "','" + test.get("wholesalePrice")+"','" + test.get("retailPrice")+  "','" + test.get("inShopsPrice")+  "','" +test.get("height") +  "','" + test.get("width") +  "','" + test.get("dateUpdStock") + "')");
 
             j++;
 
