@@ -41,26 +41,26 @@ public class ProductController {
 
     Database db = new Database();
     // field table product
-    @GetMapping("/insertproducts")
-    public void insertproducts() throws IOException, SQLException {
+    @GetMapping("/insertProducts")
+    public void insertProducts() throws IOException, SQLException {
         // ******  Create a HashMap object
-        HashMap<String, Object> productsmap = new HashMap<>();
+        HashMap<String, Object> productsMap = new HashMap<>();
         HashMap<String, Object> test = new HashMap<>();
 
         //*****for fields  l barcha  insert them into hashmap
-        String url = "https://api.bigbuy.eu/rest/catalog/products.json?page=1&pageSize=1";
+        String url = "https://api.bigbuy.eu/rest/catalog/products.json?page=1&pageSize=2";
         Object[] products = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object[].class).getBody();
 
-//System.out.println(products[0]);
+        System.out.println(products[0]);
         int j = 0;
         for (Object object : products) {
-            productsmap .put("case" + j, products[j]);
-            test = (HashMap<String, Object>) productsmap.get("case" + j); // get value by key
+            productsMap .put("case" + j, products[j]);
+            test = (HashMap<String, Object>) productsMap.get("case" + j); // get value by key
             System.out.println("********************"+test.get("id"));
             String key = String.valueOf(test.get("id"));
-            productsmap.remove("case" + j);
-            productsmap.put(key, products[j]);
-            db.executeUpdate("INSERT INTO product(id,width,active,sku,weight,height,depth,dateUpd,dateUpdDescription,dateUpdImages,dateUpdStock,wholesalePrice,retailPrice,inShopsPrice) VALUES  ('" + test.get("id") + "','" + test.get("width") + "','" + test.get("active")+ "','" +test.get("sku")+ "','" +test.get("weight")+ "','" +test.get("height")+ "','" +test.get("depth")+ "','" +test.get("dateUpd")+ "','" +test.get("dateUpdDescription")+ "','" +test.get("dateUpdImages")+ "','" +test.get("wholesalePrice")+ "','" +test.get("retailPrice")+ "','" +test.get("inShopsPrice")+"')");
+            productsMap.remove("case" + j);
+            productsMap.put(key, products[j]);
+            //db.executeUpdate("INSERT INTO product(id,width) VALUES  ('" + test.get("id") + "','" + test.get("width") + "')");
 
             j++;
 
@@ -103,7 +103,7 @@ public class ProductController {
     public List<Object> getProducts(@RequestParam("isoCode") String isoCode, @RequestParam("pageSize") long pageSize, @RequestParam("page") long page) throws IOException, JSONException {
         String url = "https://api.bigbuy.eu/rest/catalog/productsinformation.json?isoCode=" + isoCode + "&pageSize=" + pageSize + "&page=" + page;
         Object[] produits = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object[].class).getBody();
-
+        System.out.println("hello");
         ObjectMapper mapper = new ObjectMapper();
         try {
 
