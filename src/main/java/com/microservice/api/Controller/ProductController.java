@@ -55,16 +55,16 @@ public class ProductController {
             productsMap.remove("case" + j);
             productsMap.put(key, products[j]);
               //  obtain name and description
-            String url2 = "https://api.bigbuy.eu/rest/catalog/productinformationalllanguages/{id_param}.json";
-            Object[] products2 = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object[].class).getBody();
+           /* String url2 = "https://api.bigbuy.eu/rest/catalog/productinformationalllanguages/"+id_param+".json";
+            Object[] products2 = restTemplate.exchange(url2, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object[].class).getBody();
             test2 .put("jdida", products2[0]);
   String  name = (String) test2.get("name");
-  String description  = (String) test2.get("description");
+  String description  = (String) test2.get("description");*/
 
 
 
 
-  db.executeUpdate("INSERT INTO product(id,name,description,sku,weight,depth,date_upd,date_upd_description,date_upd_images,wholesale_price,retail_price,in_shops_price,height,width,date_upd_stock) VALUES  ('" + test.get("id") + "','" + name + "','" +description + "','" + test.get("sku") +  "','" + test.get("weight")+ "','" + test.get("depth")+  "','" + test.get("dateUpd") +  "','" +  test.get("dateUpdDescription")+  "','" + test.get("dateUpdImages")+  "','" + test.get("wholesalePrice")+"','" + test.get("retailPrice")+  "','" + test.get("inShopsPrice")+  "','" +test.get("height") +  "','" + test.get("width") +  "','" + test.get("dateUpdStock") + "')");
+  db.executeUpdate("INSERT INTO product(id,sku,weight,depth,date_upd,date_upd_description,date_upd_images,wholesale_price,retail_price,in_shops_price,height,width,date_upd_stock) VALUES  ('" + test.get("id") + "','" + test.get("sku") +  "','" + test.get("weight")+ "','" + test.get("depth")+  "','" + test.get("dateUpd") +  "','" +  test.get("dateUpdDescription")+  "','" + test.get("dateUpdImages")+  "','" + test.get("wholesalePrice")+"','" + test.get("retailPrice")+  "','" + test.get("inShopsPrice")+  "','" +test.get("height") +  "','" + test.get("width") +  "','" + test.get("dateUpdStock") + "')");
 
             j++;
 
