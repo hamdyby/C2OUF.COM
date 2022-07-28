@@ -33,8 +33,8 @@ public class CategoryController {
     };
   }
   Database db = new Database();
-  @GetMapping("/insertcategory")
-  public void insertcategory() throws IOException, SQLException {
+  @GetMapping("/insertCategory")
+  public void insertCategory() throws IOException, SQLException {
     HashMap<String, Object>  categoryMap = new HashMap<>();
     HashMap<String, Object> test = new HashMap<>();
     String url = "https://api.bigbuy.eu/rest/catalog/categories.json?isoCode=fr" ;
