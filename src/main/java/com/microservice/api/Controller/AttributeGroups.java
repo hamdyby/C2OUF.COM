@@ -53,7 +53,6 @@ public class AttributeGroups {
       attributeGroupsMap.remove("case" + j);
       attributeGroupsMap.put(key, attributeGroups[j]);
       db.executeUpdate("INSERT INTO attribute_group(id,name,iso_code) VALUES  ('" + test.get("id") + "','" + test.get("name") + "','" + test.get("isoCode") + "')");
-
       j++;
 
     }
