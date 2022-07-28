@@ -53,33 +53,30 @@ public class ProductController {
             //System.out.println("ewwwwwwwwwwwwwwwww"+id_param );
             System.out.println("tessssst "+ test);
             String key = String.valueOf(test.get("id"));
-            productsMap.remove("case" + j);
-            productsMap.put(key, products[j]);
-
-            /*db.executeUpdate("INSERT INTO product(id,sku,weight,depth,date_upd,date_upd_description,date_upd_images,wholesale_price,retail_price,in_shops_price,height,width,date_upd_stock) VALUES  ('" + test.get("id") + "','" + test.get("sku") +  "','" + test.get("weight")+ "','" + test.get("depth")+  "','"
-                + test.get("dateUpd") +  "','" +  test.get("dateUpdDescription")+  "','" + test.get("dateUpdImages")+  "','" + test.get("wholesalePrice")+"','" + test.get("retailPrice")+  "','" + test.get("inShopsPrice")+  "','"
-                +test.get("height") +  "','" + test.get("width") +  "','" + test.get("dateUpdStock") +"')");*/
-
-            //obtain name and description
             String url2 = "https://api.bigbuy.eu/rest/catalog/productinformationalllanguages/"+key+".json";
-            Object product = restTemplate.exchange(url2, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object.class).getBody();
-            test2.put("jdida", product);
+            Object prod = restTemplate.exchange(url2, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object.class).getBody();
+            test2.put("jdida", prod);
 
             System.out.println("ewwwwwwwwwwwwwwwww "+ test2.get("jdida") );
             test3 = (HashMap<String, Object>) test2.get("jdida");
             System.out.println("ewwwwwwwwwwwwwwwww "+ test3.get("name") );
-            String  name = (String) test3.get("name");
-            String description  = (String) test3.get("description");
 
-            System.out.println("naaaaaaame "+ test3.get("name") );
-            System.out.println("dessss "+ test3.get("description") );
+            db.executeUpdate("INSERT INTO product(id,name,sku,weight,depth,date_upd,date_upd_description,date_upd_images,wholesale_price,retail_price,in_shops_price,height,width,date_upd_stock) VALUES  ('" + test.get("id") + "','" + test3.get("name")+"','" + test.get("sku") +  "','" + test.get("weight")+ "','" + test.get("depth")+  "','"
+                + test.get("dateUpd") +  "','" +  test.get("dateUpdDescription")+  "','" + test.get("dateUpdImages")+  "','" + test.get("wholesalePrice")+"','" + test.get("retailPrice")+  "','" + test.get("inShopsPrice")+  "','"
+                +test.get("height") +  "','" + test.get("width") +  "','" + test.get("dateUpdStock") +"')");
 
-            db.executeUpdate("UPDATE product "
-                    + "SET name = '"+name+"' "
-
-                    + "WHERE id = "+key+"");
+            //obtain name and description
 
 
+
+
+
+
+
+            //test2.remove("jdida");
+
+            productsMap.remove("case" + j);
+            productsMap.put(key, products[j]);
             j++;
 
         }
