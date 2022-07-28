@@ -38,7 +38,7 @@ public class TagsController {
   }
 
   @GetMapping("/tags")
-  public void getCarriers() throws IOException {
+  public void getTags() throws IOException {
     String url = "https://api.bigbuy.eu/rest/catalog/tags.json?isoCode=fr" ;
     /*Object[] tags = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object[].class).getBody();
 
