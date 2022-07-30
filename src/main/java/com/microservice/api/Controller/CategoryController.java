@@ -2,9 +2,13 @@ package com.microservice.api.Controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
+import com.microservice.api.Connection.Database;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -28,23 +32,35 @@ public class CategoryController {
       }
     };
   }
-
-  @GetMapping("/categories")
-  public List<Object> getCarriers(){
+  Database db = new Database();
+  @GetMapping("/insertCategory")
+  public void insertCategory() throws IOException, SQLException {
+    HashMap<String, Object>  categoryMap = new HashMap<>();
+    HashMap<String, Object> test = new HashMap<>();
     String url = "https://api.bigbuy.eu/rest/catalog/categories.json?isoCode=fr" ;
-    Object[] categories = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object[].class).getBody();
+    Object[] category = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object[].class).getBody();
 
-    ObjectMapper mapper = new ObjectMapper();
-    try {
+    int j = 0;
+    for (Object object : category) {
+      categoryMap.put("case" + j, category[j]);
+      test = (HashMap<String, Object>) categoryMap.get("case" + j); // get value by key
+      //String key = (String) test.get("id");
+      String key = String.valueOf(test.get("id"));
 
-      // Writing to a file
-      mapper.writeValue(new File("categories.json"), categories);
+      categoryMap.remove("case" + j);
+      categoryMap.put(key, category[j]);
+      db.executeUpdate("INSERT INTO category(id,date_add,date_upd,name,url) VALUES  ('" + test.get("id") + "','" + test.get("dateAdd") +"','" + test.get("dateUpd")+"','" + test.get("name") + "','" + test.get("url") + "')");
 
-    } catch (IOException e) {
-      e.printStackTrace();
+      j++;
+
     }
-    return  Arrays.asList(categories);
 
-
+    //********** display the hashmap
+    for (Iterator i = categoryMap.keySet().iterator(); i.hasNext(); ) {
+      Object key = i.next();
+      System.out.println(key + "=" + categoryMap.get(key));
+    }
   }
+
 }
+

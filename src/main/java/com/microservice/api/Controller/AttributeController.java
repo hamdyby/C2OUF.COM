@@ -1,9 +1,5 @@
 package com.microservice.api.Controller;
 
-import java.io.*;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Iterator;
 import com.microservice.api.Connection.Database;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -13,8 +9,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Iterator;
+
 @RestController
-public class ProductController {
+public class AttributeController {
     @Autowired
     private RestTemplate restTemplate;
 
@@ -28,12 +29,10 @@ public class ProductController {
     }
 
     Database db = new Database();
-    // field table product
-    @GetMapping("/insertProducts")
-    public void insertProducts() throws IOException, SQLException {
+    @GetMapping("/insertattribute")
+    public void insertattribute() throws IOException, SQLException {
         // ****  Create a HashMap object
-        HashMap<String, Object> productsMap = new HashMap<>();
-        HashMap<String, Object> prodsMap = new HashMap<>();
+        HashMap<String, Object> attributsMap = new HashMap<>();
         HashMap<String, Object> test = new HashMap<>();
         HashMap<String, Object> test3 = new HashMap<>();
 
@@ -41,42 +40,28 @@ public class ProductController {
 
 
         //*****for fields  l barcha  insert them into hashmap
-        String url = "https://api.bigbuy.eu/rest/catalog/products.json?page=1&pageSize=100";
-        Object[] products = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object[].class).getBody();
+        String url = "https://api.bigbuy.eu/rest/catalog/attributes.json?isoCode=fr";
+        Object[] attributs = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object[].class).getBody();
 
         // System.out.println(products[0]);
         int j = 0;
-        for (Object object : products) {
-            productsMap.put("case" + j, products[j]);
-            test = (HashMap<String, Object>) productsMap.get("case" + j); // get value by key
+        for (Object object : attributs) {
+            attributsMap.put("case" + j,attributs[j]);
+            test = (HashMap<String, Object>)attributsMap.get("case" + j); // get value by key
             //String id_param = (String) test.get("id");
             //System.out.println("ewwwwwwwwwwwwwwwww"+id_param );
             System.out.println("tessssst "+ test);
             String key = String.valueOf(test.get("id"));
-            String url2 = "https://api.bigbuy.eu/rest/catalog/productinformationalllanguages/"+key+".json";
-            Object prod = restTemplate.exchange(url2, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object.class).getBody();
-            test2.put("jdida", prod);
+            attributsMap.remove("case" + j);
+            attributsMap.put(key,attributs[j]);
 
-            System.out.println("ewwwwwwwwwwwwwwwww "+ test2.get("jdida") );
-            test3 = (HashMap<String, Object>) test2.get("jdida");
-            System.out.println("ewwwwwwwwwwwwwwwww "+ test3.get("name") );
-
-            db.executeUpdate("INSERT INTO product(id,name,sku,weight,depth,date_upd,date_upd_description,date_upd_images,wholesale_price,retail_price,in_shops_price,height,width,date_upd_stock) VALUES  ('" + test.get("id") + "','" + test3.get("name")+"','" + test.get("sku") +  "','" + test.get("weight")+ "','" + test.get("depth")+  "','"
-                + test.get("dateUpd") +  "','" +  test.get("dateUpdDescription")+  "','" + test.get("dateUpdImages")+  "','" + test.get("wholesalePrice")+"','" + test.get("retailPrice")+  "','" + test.get("inShopsPrice")+  "','"
-                +test.get("height") +  "','" + test.get("width") +  "','" + test.get("dateUpdStock") +"')");
+            db.executeUpdate("INSERT INTO attributes(id,iso_code,name) VALUES  ('" + test.get("id") + "','" + test.get("isoCode") +  "','" + test.get("name")+"')");
 
             //obtain name and description
 
 
 
 
-
-
-
-            //test2.remove("jdida");
-
-            productsMap.remove("case" + j);
-            productsMap.put(key, products[j]);
             j++;
 
         }
@@ -135,3 +120,4 @@ public class ProductController {
 
     }*/
 }
+

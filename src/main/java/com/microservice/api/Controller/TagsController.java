@@ -4,10 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.sql.SQLException;
+import java.util.*;
 
+import com.microservice.api.Connection.Database;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -36,28 +36,37 @@ public class TagsController {
       }
     };
   }
+  Database db = new Database();
 
-  @GetMapping("/tags")
-  public void getCarriers() throws IOException {
+  @GetMapping("/inserttags")
+  public  void inserttags() throws IOException, SQLException {
+    HashMap<String, Object> tagsMap = new HashMap<>();
+    HashMap<String, Object> test = new HashMap<>();
+
     String url = "https://api.bigbuy.eu/rest/catalog/tags.json?isoCode=fr" ;
-    /*Object[] tags = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object[].class).getBody();
+    Object[] tags = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object[].class).getBody();
 
-    ObjectMapper mapper = new ObjectMapper();
-    try {
 
-      // Writing to a file
-      mapper.writeValue(new File("tags.json"), tags);
+    int j = 0;
+    for (Object object : tags) {
+      tagsMap.put("case" + j, tags[j]);
+      test = (HashMap<String, Object>) tagsMap .get("case" + j); // get value by key
+      String key = String.valueOf(test.get("id"));
+      tagsMap.remove("case" + j);
+      tagsMap.put(key,tags[j]);
+      db.executeUpdate("INSERT INTO tags(id,sku,tag) VALUES  ('" + test.get("id") + "','" + test.get("sku") +  "','" + test.get("tag") +"')");
 
-    } catch (IOException e) {
-      e.printStackTrace();
+      j++;
+
     }
-    return  Arrays.asList(tags);*/
 
-    ResponseEntity<JsonNode> e = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<String>(createHeaders()),JsonNode.class);
-
-
-    System.out.println(e.getBody());
+    //********** display the hashmap
+    for (Iterator i =tagsMap.keySet().iterator(); i.hasNext(); ) {
+      Object key = i.next();
+      System.out.println(key + "=" + tagsMap.get(key));
+    }
+  }
 
   }
 
-}
+
