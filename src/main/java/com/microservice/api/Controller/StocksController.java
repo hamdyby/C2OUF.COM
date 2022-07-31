@@ -38,7 +38,7 @@ public class StocksController {
         HashMap<String, Object> prodsMap = new HashMap<>();
         HashMap<String, Object> test = new HashMap<>();
         HashMap<String, Object> test3 = new HashMap<>();
-        HashMap<String, ArrayList<Object>> test4 = new HashMap<>();
+        HashMap<String, Object> test4 = new HashMap<>();
         HashMap<String, Object> test2 = new HashMap<>();
 
 
@@ -55,30 +55,33 @@ public class StocksController {
             productsMap.remove("case" + j);
             productsMap.put(key, products[j]);
             //obtain name and description
-            String url2 = "https://api.bigbuy.eu/rest/catalog/productstock/"+key+".json";
+            String url2 = "https://api.bigbuy.eu/rest/catalog/productstock/" + key + ".json";
             Object stock = restTemplate.exchange(url2, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object.class).getBody();
             test2.put("sttt", stock);
             System.out.println(test2);
-            test3= (HashMap<String, Object>) test2.get("sttt");
+            test3 = (HashMap<String, Object>) test2.get("sttt");
             System.out.println(test3);
-            test4= (HashMap<String, ArrayList<Object>>) test3.get("stocks");
-            System.out.println(test4);
-            db.executeUpdate("INSERT INTO stocks(max_handling_days,min_handling_days,quantity) VALUES  ('" + test4.get("maxHandlingDays")+  "','"+test4.get("minHandlingDays")+"','"+test4.get("quantity")+"')");
+
+            for (int k = 0; k < ((ArrayList<?>) test3.get("stocks")).size(); k++) {
+                test4 = (HashMap<String, Object>) ((ArrayList<Object>) test3.get("stocks")).get(k);
+                System.out.println(test4);
+                db.executeUpdate("INSERT INTO stocks(max_handling_days,min_handling_days,quantity) VALUES  ('" + test4.get("maxHandlingDays") + "','" + test4.get("minHandlingDays") + "','" + test4.get("quantity") + "')");
+
+            }
             j++;
 
-        }
 
-        //********** display the hashmap
-        System.out.println("*** Display hashmap ***");
+            //********** display the hashmap
+       /* System.out.println("*** Display hashmap ***");
 
         for (Iterator i = test3.keySet().iterator(); i.hasNext(); ) {
             Object key = i.next();
             //System.out.println(key + "=" + test2.get(key));
+        }*/
+            // *****for fields ..... insert them into hashmap..........
+
+
+            //***** insert in DB with requetes
+
         }
-        // *****for fields ..... insert them into hashmap..........
-
-
-        //***** insert in DB with requetes
-
-    }
-}
+    }}
