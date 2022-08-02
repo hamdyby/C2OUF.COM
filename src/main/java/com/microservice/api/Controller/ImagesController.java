@@ -1,6 +1,7 @@
 package com.microservice.api.Controller;
 
 import java.io.*;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,7 +31,7 @@ public class ImagesController {
 
     Database db = new Database();
     // field table product
-    @GetMapping("/insertimages")
+    @GetMapping("/insertImages")
     public void insertImages() throws IOException, SQLException {
         // ****  Create a HashMap object
         HashMap<String, Object> productsMap = new HashMap<>();
@@ -43,31 +44,22 @@ public class ImagesController {
 
 
         //*****for fields  l barcha  insert them into hashmap
-        String url = "https://api.bigbuy.eu/rest/catalog/products.json?page=1&pageSize=100";
+       String url = "https://api.bigbuy.eu/rest/catalog/products.json?page=1&pageSize=100";
         Object[] products = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object[].class).getBody();
 
-        // System.out.println(products[0]);
         int j = 0;
         for (Object object : products) {
             productsMap.put("case" + j, products[j]);
             test = (HashMap<String, Object>) productsMap.get("case" + j); // get value by key
-            System.out.println("tessssst "+ test);
             String key = String.valueOf(test.get("id"));
 
-            //obtain name and description
             String url2 = "https://api.bigbuy.eu/rest/catalog/productimages/"+key+".json";
             Object image = restTemplate.exchange(url2, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object.class).getBody();
             test2.put("img", image);
-            System.out.println("testttt2"+test2);
             test3 = (HashMap<String, Object>) test2.get("img");
-            System.out.println("testttt3"+test3);
-            //test4= (HashMap<String, ArrayList<Object>>) test3.get("images");
-            //test4.put("case" + j, (ArrayList<Object>) test3.get("images"));
 
-            //System.out.println("testttt4"+test4);
             for(int k = 0; k < ((ArrayList<?>) test3.get("images")).size(); k++) {
                 test5 = (HashMap<String, Object>) ((ArrayList<Object>) test3.get("images")).get(k);
-                System.out.println("testttt5"+test5);
                 db.executeUpdate("INSERT INTO images(id,is_cover,name,url) VALUES  ('" + test5.get("id") + "','" +  test5.get("isCover")+"','" +  test5.get("name") + "','" + test5.get("url")  + "')");
 
             }

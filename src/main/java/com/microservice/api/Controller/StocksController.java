@@ -30,8 +30,8 @@ public class StocksController {
     }
 
     Database db = new Database();
-    // field table product
-    @GetMapping("/insertstocks")
+
+    @GetMapping("/insertStocks")
     public void insertstocks() throws IOException, SQLException {
         // ****  Create a HashMap object
         HashMap<String, Object> productsMap = new HashMap<>();
@@ -54,8 +54,8 @@ public class StocksController {
             String key = String.valueOf(test.get("id"));
             productsMap.remove("case" + j);
             productsMap.put(key, products[j]);
-            //obtain name and description
-            String url2 = "https://api.bigbuy.eu/rest/catalog/productstock/" + key + ".json";
+
+            String url2 = "https://api.bigbuy.eu/rest/catalog/productstock/"+key+".json";
             Object stock = restTemplate.exchange(url2, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object.class).getBody();
             test2.put("sttt", stock);
             System.out.println(test2);

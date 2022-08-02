@@ -55,7 +55,7 @@ public class ProductController {
 
 
         //*****for fields  l barcha  insert them into hashmap
-        String url1 = "https://api.bigbuy.eu/rest/catalog/products.json?page=00&pageSize=00";
+        String url1 = "https://api.bigbuy.eu/rest/catalog/products.json?page=0&pageSize=0";
         Object[] products1 = restTemplate.exchange(url1, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object[].class).getBody();
         // System.out.println(products[0]);
         int j1 = 0;
@@ -87,7 +87,7 @@ System.out.println("*******************************************");
 
 
         //*****for fields name w description insert them into hashmap
-         String url2 ="https://api.bigbuy.eu/rest/catalog/productsinformation.json?isoCode=fr&pageSize=00&page=00";
+         String url2 ="https://api.bigbuy.eu/rest/catalog/productsinformation.json?isoCode=fr&pageSize=0&page=0";
         Object[] products2 = restTemplate.exchange(url2, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object[].class).getBody();
         // System.out.println(products[0]);
         int k = 0;
@@ -130,14 +130,14 @@ System.out.println("*******************************************");
                 inter = (HashMap<String, Object>) productsMap2.get(key2); // get value by key
 
                 String id = String.valueOf(inter.get("id"));
-                System.out.println("key 2   =  " + id);
+               // System.out.println("key 2   =  " + id);
 
 
                 String name = String.valueOf(inter.get("name"));
-                System.out.println("name   =  " + name);
+                //System.out.println("name   =  " + name);
 
                 String description = String.valueOf(inter.get("description"));
-                System.out.println("description   =  " +description);
+                //System.out.println("description   =  " +description);
 
 
 

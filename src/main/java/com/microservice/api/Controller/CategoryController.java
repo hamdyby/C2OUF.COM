@@ -44,7 +44,7 @@ public class CategoryController {
     for (Object object : category) {
       categoryMap.put("case" + j, category[j]);
       test = (HashMap<String, Object>) categoryMap.get("case" + j); // get value by key
-      //String key = (String) test.get("id");
+
       String key = String.valueOf(test.get("id"));
 
       categoryMap.remove("case" + j);
