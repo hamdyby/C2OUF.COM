@@ -117,7 +117,7 @@ public class ProductController {
 
         String description1=String.valueOf(test2.get("description"));
 
-        String description = description1.replaceAll("'", "\'");
+        String description = description1.replaceAll("'", "-");
 
 
         // insert
