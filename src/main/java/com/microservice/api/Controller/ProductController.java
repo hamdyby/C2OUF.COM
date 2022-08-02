@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -38,19 +40,10 @@ public class ProductController {
 
     // field table product
     @GetMapping("/insertProducts")
-    public void insertProducts() throws IOException, SQLException {
+    public  HashMap<String, Object> insertProducts() throws IOException, SQLException {
         // ****  Create  HashMaps
         HashMap<String, Object> productsMap1 = new HashMap<>();
         HashMap<String, Object> test1 = new HashMap<>();
-
-
-
-        HashMap<String, Object> productsMap2 = new HashMap<>();
-        HashMap<String, Object> test2= new HashMap<>();
-
-
-        HashMap<String, Object> inter = new HashMap<>();
-
 
 
 
@@ -71,7 +64,6 @@ public class ProductController {
 
         }
         //*****  Display hashmap 1
-/*
         System.out.println("*** Display hashmap 1 ***");
 
         for (Iterator i = productsMap1.keySet().iterator(); i.hasNext(); ) {
@@ -79,27 +71,63 @@ public class ProductController {
             System.out.println(key + "=" + productsMap1.get(key));
         }
 
-*/
+
+        System.out.println("*******************************************");
+       return  productsMap1;
+    }
 
 
-System.out.println("*******************************************");
+
+    @GetMapping("/ fill_product_name_desc")
+
+    @Async
+  @Scheduled(fixedDelay = 5000)
+
+  public void fill_product_name_desc() throws SQLException, IOException {
+//*****for fields name w description insert them into hashmap
+
+        HashMap<String, Object> productsMap1 =insertProducts();
+
+    HashMap<String, Object> productsMap2 = new HashMap<>();
+    HashMap<String, Object> test2 = new HashMap<>();
+    HashMap<String, Object> inter = new HashMap<>();
 
 
 
-        //*****for fields name w description insert them into hashmap
-         String url2 ="https://api.bigbuy.eu/rest/catalog/productsinformation.json?isoCode=fr&pageSize=0&page=0";
-        Object[] products2 = restTemplate.exchange(url2, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object[].class).getBody();
-        // System.out.println(products[0]);
-        int k = 0;
-        for (Object object : products2) {
-            productsMap2.put("case" + k, products2[k]);
-            test2 = (HashMap<String, Object>) productsMap2.get("case" +k); // get value by key
-            String key = String.valueOf(test2.get("id"));
-            productsMap2.remove("case" + k);
-            productsMap2.put(key, products2[k]);
-            k++;
 
+    for (Iterator i = productsMap1.keySet().iterator(); i.hasNext(); ) {
+        Object id = i.next();
+        System.out.println(id + "=" + productsMap1.get(id));
+
+
+
+
+    String url2 ="https://api.bigbuy.eu/rest/catalog/productinformationalllanguages/"+id+".json";
+    Object[] products2 = restTemplate.exchange(url2, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object[].class).getBody();
+    // System.out.println(products[0]);
+    int k = 0;
+    for (Object object : products2) {
+        productsMap2.put("case" + k, products2[k]);
+        test2 = (HashMap<String, Object>) productsMap2.get("case" +k); // get value by key
+        String key = String.valueOf(test2.get("id"));
+        productsMap2.remove("case" + k);
+        productsMap2.put(key, products2[k]);
+        k++;
+
+    }
+// insert
+
+    }
+
+        //********** display the hashmap with champs name w description
+        System.out.println("*** Display hashmap 2 ***");
+
+        for (Iterator n =  productsMap2.keySet().iterator(); n.hasNext(); ) {
+            Object key2 = n.next();
+            System.out.println(key2 + "=" + productsMap2.get(key2));
         }
+}
+
 
         /*
         //********** display the hashmap with champs name w description
@@ -114,6 +142,21 @@ System.out.println("*******************************************");
 
 // ********** join informations
 
+/*
+        System.out.println("*** Display hashmap 1 ***");
+
+        for (Iterator i = productsMap1.keySet().iterator(); i.hasNext(); ) {
+            Object key = i.next();
+            System.out.println(key + "=" + productsMap1.get(key));
+        }
+
+
+
+
+        for (Iterator n =  productsMap2.keySet().iterator(); n.hasNext(); ) {
+            Object key2 = n.next();
+            System.out.println(key2 + "=" + productsMap2.get(key2));
+        }
 
 
         for (Iterator x = productsMap1.keySet().iterator(); x.hasNext(); ) {
@@ -130,37 +173,44 @@ System.out.println("*******************************************");
                 inter = (HashMap<String, Object>) productsMap2.get(key2); // get value by key
 
                 String id = String.valueOf(inter.get("id"));
-               // System.out.println("key 2   =  " + id);
+                System.out.println("key 2   =  " + id);
 
-
+/*
                 String name = String.valueOf(inter.get("name"));
-                //System.out.println("name   =  " + name);
+                System.out.println("name   =  " + name);
 
                 String description = String.valueOf(inter.get("description"));
-                //System.out.println("description   =  " +description);
+                System.out.println("description   =  " +description);
 
-
+*/
+    /*
 
                     if (key1==id)
                     {
-                        db.executeUpdate("INSERT INTO product(id,name,description,sku,weight,depth,date_upd,date_upd_description,date_upd_images,wholesale_price,retail_price,in_shops_price,height,width,date_upd_stock) VALUES  ('" + productsMap1.get("id") + "','" + name + "','" + description +"','" + productsMap1.get("sku") +  "','" + productsMap1.get("weight")+ "','" + productsMap1.get("depth")+  "','"
+                      /*  db.executeUpdate("INSERT INTO product(id,name,description,sku,weight,depth,date_upd,date_upd_description,date_upd_images,wholesale_price,retail_price,in_shops_price,height,width,date_upd_stock) VALUES  ('" + productsMap1.get("id") + "','" + name + "','" + description +"','" + productsMap1.get("sku") +  "','" + productsMap1.get("weight")+ "','" + productsMap1.get("depth")+  "','"
                                 + productsMap1.get("dateUpd") +  "','" +  productsMap1.get("dateUpdDescription")+  "','" + productsMap1.get("dateUpdImages")+  "','" + productsMap1.get("wholesalePrice")+"','" + productsMap1.get("retailPrice")+  "','" + productsMap1.get("inShopsPrice")+  "','"
                                 +productsMap1.get("height") +  "','" + productsMap1.get("width") +  "','" + productsMap1.get("dateUpdStock") +"')");
-
+*/
+    /*
+                        System.out.println("yeeeeeeeeeeeees");
                     }
-                       }
+                    else
+                        System.out.println("pas de correspendence");
+
+                }  // enf for 2
 
 
-            }
+
+            } // end for1
 
     }
 
 
 
+*/
 
 
-
-        }
+        }   // end class
 
 
 
