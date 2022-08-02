@@ -38,17 +38,16 @@ public class ProductController {
 
     Database db = new Database();
 
+    public static HashMap<String, Object> productsMap1 = new HashMap<>();
     // field table product
     @GetMapping("/insertProducts")
-    public  HashMap<String, Object> insertProducts() throws IOException, SQLException {
+    public  void insertProducts() throws IOException, SQLException {
         // ****  Create  HashMaps
-        HashMap<String, Object> productsMap1 = new HashMap<>();
+        //HashMap<String, Object> productsMap1 = new HashMap<>();
         HashMap<String, Object> test1 = new HashMap<>();
 
-
-
         //*****for fields  l barcha  insert them into hashmap
-        String url1 = "https://api.bigbuy.eu/rest/catalog/products.json?page=0&pageSize=0";
+        String url1 = "https://api.bigbuy.eu/rest/catalog/products.json?page=2&pageSize=200";
         Object[] products1 = restTemplate.exchange(url1, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object[].class).getBody();
         // System.out.println(products[0]);
         int j1 = 0;
@@ -73,23 +72,21 @@ public class ProductController {
 
 
         System.out.println("*******************************************");
-       return  productsMap1;
     }
 
 
 
-    @GetMapping("/ fill_product_name_desc")
 
     @Async
-  @Scheduled(fixedDelay = 5000)
-
-  public void fill_product_name_desc() throws SQLException, IOException {
+    @Scheduled(fixedDelay = 5000)
+    @GetMapping("/fill_product_name_desc")
+    public void fill_product_name_desc() throws SQLException, IOException {
 //*****for fields name w description insert them into hashmap
 
-        HashMap<String, Object> productsMap1 =insertProducts();
 
     HashMap<String, Object> productsMap2 = new HashMap<>();
     HashMap<String, Object> test2 = new HashMap<>();
+    HashMap<String, Object> test3 = new HashMap<>();
     HashMap<String, Object> inter = new HashMap<>();
 
 
@@ -99,23 +96,27 @@ public class ProductController {
         Object id = i.next();
         System.out.println(id + "=" + productsMap1.get(id));
 
+        String keyy = (String) id;
 
 
-
-    String url2 ="https://api.bigbuy.eu/rest/catalog/productinformationalllanguages/"+id+".json";
-    Object[] products2 = restTemplate.exchange(url2, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object[].class).getBody();
-    // System.out.println(products[0]);
-    int k = 0;
-    for (Object object : products2) {
-        productsMap2.put("case" + k, products2[k]);
-        test2 = (HashMap<String, Object>) productsMap2.get("case" +k); // get value by key
+    String url2 ="https://api.bigbuy.eu/rest/catalog/productinformationalllanguages/"+keyy+".json";
+    Object products2 = restTemplate.exchange(url2, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object.class).getBody();
+        productsMap2.put("case" , products2);
+        test2 = (HashMap<String, Object>) productsMap2.get("case"); // get value by key
+        productsMap2.remove("case");
+        test3 = (HashMap<String, Object>) productsMap1.get(keyy);
+        productsMap1.remove(keyy);
         String key = String.valueOf(test2.get("id"));
-        productsMap2.remove("case" + k);
-        productsMap2.put(key, products2[k]);
-        k++;
 
-    }
-// insert
+        System.out.println(test2.get("name"));
+        System.out.println(productsMap1.get(keyy));
+
+        // insert
+        db.executeUpdate("INSERT INTO product(id,name,sku,weight,depth,date_upd,date_upd_description,date_upd_images,wholesale_price,retail_price,in_shops_price,height,width,date_upd_stock) VALUES  ('" + test3.get("id") + "','" + test2.get("name")  +"','" + test3.get("sku") +  "','" + test3.get("weight")+ "','" + test3.get("depth")+  "','"
+            + test3.get("dateUpd") +  "','" +  test3.get("dateUpdDescription")+  "','" + test3.get("dateUpdImages")+  "','" + test3.get("wholesalePrice")+"','" + test3.get("retailPrice")+  "','" + test3.get("inShopsPrice")+  "','"
+            +test3.get("height") +  "','" + test3.get("width") +  "','" + test3.get("dateUpdStock") +"')");
+
+        test2.remove("case");
 
     }
 
