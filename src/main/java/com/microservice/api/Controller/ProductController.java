@@ -47,7 +47,7 @@ public class ProductController {
         HashMap<String, Object> test1 = new HashMap<>();
 
         //*****for fields  l barcha  insert them into hashmap
-        String url1 = "https://api.bigbuy.eu/rest/catalog/products.json?page=4&pageSize=4";
+        String url1 = "https://api.bigbuy.eu/rest/catalog/products.json?page=4&pageSize=200";
         Object[] products1 = restTemplate.exchange(url1, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object[].class).getBody();
         // System.out.println(products[0]);
         int j1 = 0;
@@ -113,15 +113,15 @@ public class ProductController {
 
         String name1=String.valueOf(test2.get("name"));
 
-        String name = name1.replaceAll("'", "-");
+        String name = name1.replaceAll("'", "#");
 
         String description1=String.valueOf(test2.get("description"));
 
-        String description = description1.replaceAll("'", "-");
+        String description = description1.replaceAll("'", "#");
 
 
         // insert
-        db.executeUpdate("INSERT INTO product(id,name,description,sku,weight,depth,date_upd,date_upd_description,date_upd_images,wholesale_price,retail_price,in_shops_price,height,width,date_upd_stock) VALUES  ('" + test3.get("id") + "','" + name + "','" + description +"','" + test3.get("sku") +  "','" + test3.get("weight")+ "','" + test3.get("depth")+  "','"
+        db.executeUpdate("INSERT INTO product(id,name,description,url,iso_code,categories,sku,weight,depth,date_upd,date_upd_description,date_upd_images,wholesale_price,retail_price,in_shops_price,height,width,date_upd_stock) VALUES  ('" + test3.get("id") + "','" + name + "','" + description + "','" + test2.get("url") +"','" + test2.get("isoCode") +"','" + test3.get("categories") +"','" + test3.get("sku")+  "','" + test3.get("weight")+ "','" + test3.get("depth")+  "','"
             + test3.get("dateUpd") +  "','" +  test3.get("dateUpdDescription")+  "','" + test3.get("dateUpdImages")+  "','" + test3.get("wholesalePrice")+"','" + test3.get("retailPrice")+  "','" + test3.get("inShopsPrice")+  "','"
             +test3.get("height") +  "','" + test3.get("width") +  "','" + test3.get("dateUpdStock") +"')");
 

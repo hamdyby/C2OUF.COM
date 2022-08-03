@@ -37,8 +37,8 @@ public class CategoryController {
   public void insertCategory() throws IOException, SQLException {
     HashMap<String, Object>  categoryMap = new HashMap<>();
     HashMap<String, Object> test = new HashMap<>();
-    String url = "https://api.bigbuy.eu/rest/catalog/categories.json?isoCode=fr" ;
-    Object[] category = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object[].class).getBody();
+    String URL = "https://api.bigbuy.eu/rest/catalog/categories.json?isoCode=fr" ;
+    Object[] category = restTemplate.exchange(URL, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object[].class).getBody();
 
     int j = 0;
     for (Object object : category) {
@@ -49,7 +49,13 @@ public class CategoryController {
 
       categoryMap.remove("case" + j);
       categoryMap.put(key, category[j]);
-      db.executeUpdate("INSERT INTO category(id,date_add,date_upd,name,url) VALUES  ('" + test.get("id") + "','" + test.get("dateAdd") +"','" + test.get("dateUpd")+"','" + test.get("name") + "','" + test.get("url") + "')");
+
+      String name1=String.valueOf(test.get("name"));
+      String name = name1.replaceAll("'", "#");
+      String url1=String.valueOf(test.get("url"));
+      String url = url1.replaceAll("'", "#");
+
+      db.executeUpdate("INSERT INTO category(id,date_add,date_upd,name,url) VALUES  ('" + test.get("id") + "','" + test.get("dateAdd") +"','" + test.get("dateUpd")+"','" + name + "','" + url + "')");
 
       j++;
 
