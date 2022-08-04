@@ -128,7 +128,7 @@ public class ProductController {
                     .get("wholesalePrice") + "','" + test3.get("retailPrice") + "','" + test3.get("inShopsPrice") + "','"
                     + test3.get("height") + "','" + test3.get("width") + "','" + test3.get("dateUpdStock") + "')"
 
-                    + "ON DUPLICATE KEY UPDATE"+  " id = '" + test3.get("id") + "'," + " name = '"+name + "'," + " description = '"+description + "'," + " url = '" +test2.get("url") + "',"
+                    + "ON DUPLICATE KEY UPDATE"+   " name = '"+name + "'," + " description = '"+description + "'," + " url = '" +test2.get("url") + "',"
                     + " category_id = '"+test3.get("category")+ "'," + " iso_code = '"+test2.get("isoCode") + "'," + " categories = '"+ test3.get("categories") + "'," + " sku = '"+test3.get("sku") + "'," + " weight = '"+test3.get("weight") + "'," + " depth = '"+ test3.get("depth") + "',"+ " date_upd = '" +test3.get("dateUpd") + "',"
                     + " date_upd_description = '"+test3.get("dateUpdDescription") + "'," +" date_upd_images = '" +test3.get("dateUpdImages") + "'," + " wholesale_price = '"+test3.get("wholesalePrice") + "'," + " retail_price = '"+ test3.get("retailPrice") + "'," + " in_shops_price = '"+ test3.get("inShopsPrice") + "',"
                     + " height = '"+ test3.get("height") + "'," + " width = '"+test3.get("width") + "'," + " date_upd_stock = '" + test3.get("dateUpdStock") + "'" );
@@ -144,7 +144,7 @@ public class ProductController {
                 db.executeUpdate(
                     "INSERT INTO images(id,is_cover,name,url,product_id) VALUES  ('" + test5.get("id") + "','" + test5.get("isCover") + "','" + test5
                         .get("name") + "','" + test5.get("url") + "','" + keyy + "')"
-                        + "ON DUPLICATE KEY UPDATE" +" id = '" + test5.get("id") + "'," +" is_cover = '" +test5.get("isCover") + "'," + " name = '"
+                        + "ON DUPLICATE KEY UPDATE" +" is_cover = '" +test5.get("isCover") + "'," + " name = '"
                         +test5.get("name") + "'," + " url = '"+test5.get("url") + "'," +" product_id = '"+ keyy + "'" );
 
             }
@@ -158,8 +158,9 @@ public class ProductController {
             for (int k = 0; k < ((ArrayList<?>) test3Stock.get("stocks")).size(); k++) {
                 test4Stock = (HashMap<String, Object>) ((ArrayList<Object>) test3Stock.get("stocks")).get(k);
 
-                db.executeUpdate("INSERT INTO stocks(max_handling_days,min_handling_days,quantity,product_id) VALUES  ('" + test4Stock.get("maxHandlingDays") + "','" + test4Stock.get("minHandlingDays") + "','" + test4Stock.get("quantity") + "','" +keyy+ "')"
-                            + "ON DUPLICATE KEY UPDATE" + " max_handling_days = '"+ test4Stock.get("maxHandlingDays") + "'," + " min_handling_days = '" +test4Stock.get("minHandlingDays") + "'," +" quantity = '" +test4Stock.get("quantity") + "'," +" product_id = '"+keyy+ "'");
+                db.executeUpdate("INSERT INTO stocks(id,max_handling_days,min_handling_days,quantity,product_id) VALUES  ('" + keyy + "','" + test4Stock.get("maxHandlingDays") + "','" + test4Stock.get("minHandlingDays") + "','" + test4Stock.get("quantity") + "','" +keyy+ "')"
+                            + "ON DUPLICATE KEY UPDATE" + " max_handling_days = '"+ test4Stock.get("maxHandlingDays") + "'," + " min_handling_days = '" +test4Stock.get("minHandlingDays") + "'," +" quantity = '" +test4Stock.get("quantity") + "'," +" product_id = '"+keyy+ "'"
+                           );
 
             }
 
