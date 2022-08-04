@@ -50,7 +50,7 @@ public class ProductController {
         HashMap<String, Object> test1 = new HashMap<>();
 
         //*****for fields  l barcha  insert them into hashmap
-        String url1 = "https://api.bigbuy.eu/rest/catalog/products.json?page=1&pageSize=300";
+        String url1 = "https://api.bigbuy.eu/rest/catalog/products.json?page=1&pageSize=4";
         Object[] products1 = restTemplate.exchange(url1, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object[].class).getBody();
         // System.out.println(products[0]);
         int j1 = 0;
@@ -87,6 +87,9 @@ public class ProductController {
         HashMap<String, Object> test2 = new HashMap<>();
         HashMap<String, Object> testImage = new HashMap<>();
         HashMap<String, Object> test3Image = new HashMap<>();
+        HashMap<String, Object> testStock = new HashMap<>();
+        HashMap<String, Object> test3Stock  = new HashMap<>();
+        HashMap<String, Object> test4Stock  = new HashMap<>();
         HashMap<String, Object> test5 = new HashMap<>();
         HashMap<String, Object> test3 = new HashMap<>();
         HashMap<String, Object> inter = new HashMap<>();
@@ -117,16 +120,20 @@ public class ProductController {
 
             String description = description1.replaceAll("'", "#");
 
-            // insert
+            // insert products
             db.executeUpdate(
-                "INSERT INTO product(id,name,description,url,category_id,iso_code,categories,sku,weight,depth,date_upd,date_upd_description,date_upd_images,wholesale_price,retail_price,in_shops_price,height,width,date_upd_stock) VALUES  ('"
-                    + test3.get("id") + "','" + name + "','" + description + "','" + test2.get("url") + "','" + test3.get("category") + "','" + test2
+                "INSERT INTO product(id,name,description,url,category_id,iso_code,categories,sku,weight,depth,date_upd,date_upd_description,date_upd_images,wholesale_price,retail_price,in_shops_price,height,width,date_upd_stock) VALUES  ('" + test3.get("id") + "','" + name + "','" + description + "','" + test2.get("url") + "','" + test3.get("category") + "','" + test2
                     .get("isoCode") + "','" + test3.get("categories") + "','" + test3.get("sku") + "','" + test3.get("weight") + "','" + test3
-                    .get("depth") + "','"
-                    + test3.get("dateUpd") + "','" + test3.get("dateUpdDescription") + "','" + test3.get("dateUpdImages") + "','" + test3
+                    .get("depth") + "','" + test3.get("dateUpd") + "','" + test3.get("dateUpdDescription") + "','" + test3.get("dateUpdImages") + "','" + test3
                     .get("wholesalePrice") + "','" + test3.get("retailPrice") + "','" + test3.get("inShopsPrice") + "','"
-                    + test3.get("height") + "','" + test3.get("width") + "','" + test3.get("dateUpdStock") + "')");
+                    + test3.get("height") + "','" + test3.get("width") + "','" + test3.get("dateUpdStock") + "')"
 
+                    + "ON DUPLICATE KEY UPDATE"+  " id = '" + test3.get("id") + "'," + " name = '"+name + "'," + " description = '"+description + "'," + " url = '" +test2.get("url") + "',"
+                    + " category_id = '"+test3.get("category")+ "'," + " iso_code = '"+test2.get("isoCode") + "'," + " categories = '"+ test3.get("categories") + "'," + " sku = '"+test3.get("sku") + "'," + " weight = '"+test3.get("weight") + "'," + " depth = '"+ test3.get("depth") + "',"+ " date_upd = '" +test3.get("dateUpd") + "',"
+                    + " date_upd_description = '"+test3.get("dateUpdDescription") + "'," +" date_upd_images = '" +test3.get("dateUpdImages") + "'," + " wholesale_price = '"+test3.get("wholesalePrice") + "'," + " retail_price = '"+ test3.get("retailPrice") + "'," + " in_shops_price = '"+ test3.get("inShopsPrice") + "',"
+                    + " height = '"+ test3.get("height") + "'," + " width = '"+test3.get("width") + "'," + " date_upd_stock = '" + test3.get("dateUpdStock") + "'" );
+
+            //insert their images
             String url3 = "https://api.bigbuy.eu/rest/catalog/productimages/" + keyy + ".json";
             Object image = restTemplate.exchange(url3, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object.class).getBody();
             testImage.put("img", image);
@@ -136,12 +143,27 @@ public class ProductController {
                 test5 = (HashMap<String, Object>) ((ArrayList<Object>) test3Image.get("images")).get(k);
                 db.executeUpdate(
                     "INSERT INTO images(id,is_cover,name,url,product_id) VALUES  ('" + test5.get("id") + "','" + test5.get("isCover") + "','" + test5
-                        .get("name") + "','" + test5.get("url") + "','" + keyy + "')");
+                        .get("name") + "','" + test5.get("url") + "','" + keyy + "')"
+                        + "ON DUPLICATE KEY UPDATE" +" id = '" + test5.get("id") + "'," +" is_cover = '" +test5.get("isCover") + "'," + " name = '"
+                        +test5.get("name") + "'," + " url = '"+test5.get("url") + "'," +" product_id = '"+ keyy + "'" );
+
+            }
+
+            //insert stock
+            String urlStock = "https://api.bigbuy.eu/rest/catalog/productstock/"+keyy+".json";
+            Object stock = restTemplate.exchange(urlStock, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object.class).getBody();
+            testStock.put("sttt", stock);
+            test3Stock = (HashMap<String, Object>) testStock.get("sttt");
+
+            for (int k = 0; k < ((ArrayList<?>) test3Stock.get("stocks")).size(); k++) {
+                test4Stock = (HashMap<String, Object>) ((ArrayList<Object>) test3Stock.get("stocks")).get(k);
+
+                db.executeUpdate("INSERT INTO stocks(max_handling_days,min_handling_days,quantity,product_id) VALUES  ('" + test4Stock.get("maxHandlingDays") + "','" + test4Stock.get("minHandlingDays") + "','" + test4Stock.get("quantity") + "','" +keyy+ "')"
+                            + "ON DUPLICATE KEY UPDATE" + " max_handling_days = '"+ test4Stock.get("maxHandlingDays") + "'," + " min_handling_days = '" +test4Stock.get("minHandlingDays") + "'," +" quantity = '" +test4Stock.get("quantity") + "'," +" product_id = '"+keyy+ "'");
 
             }
 
             test2.remove("case");
-
         }
 
         //********** display the hashmap with champs name w description
