@@ -1,27 +1,19 @@
 package com.microservice.api.Controller;
 
-    import java.io.File;
     import java.io.IOException;
-    import java.security.KeyStore;
     import java.sql.SQLException;
     import java.util.ArrayList;
-    import java.util.Arrays;
     import java.util.Iterator;
     import java.util.HashMap; // import the HashMap class
-    import java.util.Map;
-
-    import com.fasterxml.jackson.databind.ObjectMapper;
     import com.microservice.api.Connection.Database;
     import org.modelmapper.ModelMapper;
     import org.springframework.beans.factory.annotation.Autowired;
-    import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration;
     import org.springframework.http.HttpEntity;
     import org.springframework.http.HttpHeaders;
     import org.springframework.http.HttpMethod;
     import org.springframework.web.bind.annotation.GetMapping;
     import org.springframework.web.bind.annotation.RestController;
     import org.springframework.web.client.RestTemplate;
-
     import com.microservice.api.Service.CarriersService;
 
 

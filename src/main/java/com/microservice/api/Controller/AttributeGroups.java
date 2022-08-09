@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -12,9 +11,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-
 import com.microservice.api.Connection.Database;
-import com.microservice.api.Service.CarriersService;
 
 @RestController
 public class AttributeGroups {
@@ -36,7 +33,7 @@ public class AttributeGroups {
   // field table Carriers
   @GetMapping("/insertAttributeGroups")
   public void insertCarriers() throws IOException, SQLException {
-    // ******  Create a HashMap object
+    // ******  Create  HashMap objects
     HashMap<String, Object> attributeGroupsMap = new HashMap<>();
     HashMap<String, Object> test = new HashMap<>();
 

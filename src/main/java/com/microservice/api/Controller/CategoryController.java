@@ -1,13 +1,9 @@
 package com.microservice.api.Controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-
 import com.microservice.api.Connection.Database;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -17,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 public class CategoryController {

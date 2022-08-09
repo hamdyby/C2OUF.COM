@@ -40,7 +40,7 @@ public class CarriersController {
   // field table Carriers
   @GetMapping("/insertCarriers")
   public void insertCarriers() throws IOException, SQLException {
-    // ******  Create a HashMap object
+    // ******  Create  HashMap objects
     HashMap<String, Object> carriersMap = new HashMap<>();
     HashMap<String, Object> test = new HashMap<>();
 

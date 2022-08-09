@@ -5,11 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microservice.api.Connection.Database;
-import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -46,13 +42,11 @@ public class ProductController {
     @GetMapping("/insertProducts")
     public void insertProducts() throws IOException, SQLException {
         // ****  Create  HashMaps
-        //HashMap<String, Object> productsMap1 = new HashMap<>();
         HashMap<String, Object> test1 = new HashMap<>();
 
         //*****for fields  l barcha  insert them into hashmap
-        String url1 = "https://api.bigbuy.eu/rest/catalog/products.json?page=1&pageSize=4";
+        String url1 = "https://api.bigbuy.eu/rest/catalog/products.json?page=1&pageSize=500";
         Object[] products1 = restTemplate.exchange(url1, HttpMethod.GET, new HttpEntity<String>(createHeaders()), Object[].class).getBody();
-        // System.out.println(products[0]);
         int j1 = 0;
         for (Object object : products1) {
             productsMap1.put("case" + j1, products1[j1]);
@@ -73,7 +67,6 @@ public class ProductController {
             System.out.println(key + "=" + productsMap1.get(key));
         }
 
-        System.out.println("*******************************************");
     }
 
 
@@ -167,7 +160,7 @@ public class ProductController {
             test2.remove("case");
         }
 
-        //********** display the hashmap with champs name w description
+        //********** display the hashmap with fields name w description
         System.out.println("*** Display hashmap 2 ***");
 
         for (Iterator n = productsMap2.keySet().iterator(); n.hasNext(); ) {
